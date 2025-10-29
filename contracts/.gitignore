@@ -45,3 +45,8 @@ testMatrix.json
 
 # E2E broadcast logs
 /broadcast-e2e
+
+# Coverage files
+crytic-export
+echidna
+medusa
