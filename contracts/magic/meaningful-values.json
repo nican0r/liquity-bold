@@ -1,0 +1,272 @@
+[
+  {
+    "target_function": "borrowerOperations_addColl",
+    "type": "max",
+    "value": "uint256 _collAmount",
+    "access": "collToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_adjustTrove",
+    "type": "max",
+    "value": "uint256 _collChange",
+    "access": "collToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_adjustTrove",
+    "type": "max",
+    "value": "uint256 _boldChange",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_adjustTroveInterestRate",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_adjustTroveInterestRate",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_adjustZombieTrove",
+    "type": "max",
+    "value": "uint256 _collChange",
+    "access": "collToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_adjustZombieTrove",
+    "type": "max",
+    "value": "uint256 _boldChange",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_closeTrove",
+    "type": "max",
+    "value": "uint256 _troveId",
+    "access": "troveNFT.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_lowerBatchManagementFee",
+    "type": "exact",
+    "value": "uint256 _newAnnualManagementFee",
+    "access": "MAX_ANNUAL_BATCH_MANAGEMENT_FEE"
+  },
+  {
+    "target_function": "borrowerOperations_openTrove",
+    "type": "max",
+    "value": "uint256 _collAmount",
+    "access": "collToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_openTrove",
+    "type": "exact",
+    "value": "uint256 _boldAmount",
+    "access": "MIN_DEBT"
+  },
+  {
+    "target_function": "borrowerOperations_openTrove",
+    "type": "exact",
+    "value": "uint256 _annualInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_openTrove",
+    "type": "exact",
+    "value": "uint256 _annualInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _minInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _maxInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _currentInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _currentInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _annualManagementFee",
+    "access": "MAX_ANNUAL_BATCH_MANAGEMENT_FEE"
+  },
+  {
+    "target_function": "borrowerOperations_registerBatchManager",
+    "type": "exact",
+    "value": "uint128 _minInterestRateChangePeriod",
+    "access": "MIN_INTEREST_RATE_CHANGE_PERIOD"
+  },
+  {
+    "target_function": "borrowerOperations_removeFromBatch",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_removeFromBatch",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_repayBold",
+    "type": "max",
+    "value": "uint256 _boldAmount",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "borrowerOperations_setBatchManagerAnnualInterestRate",
+    "type": "exact",
+    "value": "uint128 _newAnnualInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setBatchManagerAnnualInterestRate",
+    "type": "exact",
+    "value": "uint128 _newAnnualInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setInterestIndividualDelegate",
+    "type": "exact",
+    "value": "uint128 _minInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setInterestIndividualDelegate",
+    "type": "exact",
+    "value": "uint128 _maxInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setInterestIndividualDelegate",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MIN_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setInterestIndividualDelegate",
+    "type": "exact",
+    "value": "uint256 _newAnnualInterestRate",
+    "access": "MAX_ANNUAL_INTEREST_RATE"
+  },
+  {
+    "target_function": "borrowerOperations_setInterestIndividualDelegate",
+    "type": "exact",
+    "value": "uint256 _minInterestRateChangePeriod",
+    "access": "MIN_INTEREST_RATE_CHANGE_PERIOD"
+  },
+  {
+    "target_function": "borrowerOperations_withdrawBold",
+    "type": "exact",
+    "value": "uint256 _boldAmount",
+    "access": "MIN_DEBT"
+  },
+  {
+    "target_function": "borrowerOperations_withdrawColl",
+    "type": "max",
+    "value": "uint256 _collWithdrawal",
+    "access": "collToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "boldToken_approve",
+    "type": "max",
+    "value": "uint256 amount",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "boldToken_decreaseAllowance",
+    "type": "max",
+    "value": "uint256 subtractedValue",
+    "access": "boldToken.allowance(_getActor(), spender)"
+  },
+  {
+    "target_function": "boldToken_increaseAllowance",
+    "type": "max",
+    "value": "uint256 addedValue",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "boldToken_transfer",
+    "type": "max",
+    "value": "uint256 amount",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "boldToken_transferFrom",
+    "type": "max",
+    "value": "uint256 amount",
+    "access": "boldToken.balanceOf(sender)"
+  },
+  {
+    "target_function": "boldToken_transferFrom",
+    "type": "max",
+    "value": "uint256 amount",
+    "access": "boldToken.allowance(sender, _getActor())"
+  },
+  {
+    "target_function": "collateralRegistry_redeemCollateral",
+    "type": "max",
+    "value": "uint256 _boldAmount",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "collateralRegistry_redeemCollateral",
+    "type": "exact",
+    "value": "uint256 _maxFeePercentage",
+    "access": "DECIMAL_PRECISION"
+  },
+  {
+    "target_function": "stabilityPool_provideToSP",
+    "type": "max",
+    "value": "uint256 _topUp",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "stabilityPool_withdrawFromSP",
+    "type": "max",
+    "value": "uint256 _amount",
+    "access": "stabilityPool.getCompoundedBoldDeposit(_getActor())"
+  },
+  {
+    "target_function": "troveManager_urgentRedemption",
+    "type": "max",
+    "value": "uint256 _boldAmount",
+    "access": "boldToken.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "troveNFT_approve",
+    "type": "max",
+    "value": "uint256 tokenId",
+    "access": "troveNFT.balanceOf(_getActor())"
+  },
+  {
+    "target_function": "troveNFT_safeTransferFrom",
+    "type": "max",
+    "value": "uint256 tokenId",
+    "access": "troveNFT.balanceOf(from)"
+  },
+  {
+    "target_function": "troveNFT_transferFrom",
+    "type": "max",
+    "value": "uint256 tokenId",
+    "access": "troveNFT.balanceOf(from)"
+  }
+]
