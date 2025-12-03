@@ -10,6 +10,14 @@ import {vm} from "@chimera/Hevm.sol";
 // Helpers
 import {Panic} from "@recon/Panic.sol";
 
+// Types
+import "src/Types/TroveChange.sol";
+import "src/Types/BatchId.sol";
+
+// Interfaces
+import "src/Interfaces/ITroveManager.sol";
+import "src/Interfaces/IBorrowerOperations.sol";
+
 abstract contract AdminTargets is
     BaseTargetFunctions,
     Properties

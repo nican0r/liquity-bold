@@ -191,18 +191,19 @@ abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
         activePool = new ActivePool(tempRegistry2);
         defaultPool = new DefaultPool(tempRegistry2);
         
-        // 11. Deploy third registry with real activePool/defaultPool
-        addressesRegistry = new AddressesRegistry(
+        // 11. Create a temp registry for deploying borrowerOperations/troveManager
+        // This registry has all the info needed for constructors but not borrowerOperations/troveManager themselves
+        AddressesRegistry tempRegistry = new AddressesRegistry(
             address(this), CCR, MCR, BCR, SCR, LIQUIDATION_PENALTY_SP, LIQUIDATION_PENALTY_REDISTRIBUTION
         );
         
-        IAddressesRegistry.AddressVars memory tempVars3 = IAddressesRegistry.AddressVars({
+        IAddressesRegistry.AddressVars memory tempVars = IAddressesRegistry.AddressVars({
             collToken: IERC20Metadata(address(collToken)),
-            borrowerOperations: IBorrowerOperations(address(0)),
-            troveManager: ITroveManager(address(0)),
+            borrowerOperations: IBorrowerOperations(address(0)),  // Will be set in final registry
+            troveManager: ITroveManager(address(0)),  // Will be set in final registry
             troveNFT: ITroveNFT(address(troveNFT)),
             metadataNFT: IMetadataNFT(address(metadataNFT)),
-            stabilityPool: IStabilityPool(address(0)),
+            stabilityPool: IStabilityPool(address(0)),  // Will be set in final registry
             priceFeed: IPriceFeed(address(priceFeed)),
             activePool: IActivePool(address(activePool)),
             defaultPool: IDefaultPool(address(defaultPool)),
@@ -210,18 +211,18 @@ abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
             collSurplusPool: ICollSurplusPool(address(collSurplusPool)),
             sortedTroves: ISortedTroves(address(sortedTroves)),
             interestRouter: IInterestRouter(address(interestRouter)),
-            hintHelpers: IHintHelpers(address(0)),
-            multiTroveGetter: IMultiTroveGetter(address(0)),
-            collateralRegistry: ICollateralRegistry(address(0)),
+            hintHelpers: IHintHelpers(address(0)),  // Will be set in final registry
+            multiTroveGetter: IMultiTroveGetter(address(0)),  // Will be set in final registry
+            collateralRegistry: ICollateralRegistry(address(0)),  // Will be set in final registry
             boldToken: IBoldToken(address(boldToken)),
             WETH: IWETH(address(collToken))
         });
-        addressesRegistry.setAddresses(tempVars3);
+        tempRegistry.setAddresses(tempVars);
         
-        // 12. Deploy remaining contracts that need real activePool
-        borrowerOperations = new BorrowerOperationsTester(addressesRegistry);
-        troveManager = new TroveManagerTester(addressesRegistry);
-        stabilityPool = new StabilityPool(addressesRegistry);
+        // 12. Deploy remaining contracts using the temp registry
+        borrowerOperations = new BorrowerOperationsTester(tempRegistry);
+        troveManager = new TroveManagerTester(tempRegistry);
+        stabilityPool = new StabilityPool(tempRegistry);
         
         // 13. Deploy CollateralRegistry
         IERC20Metadata[] memory collaterals = new IERC20Metadata[](1);
@@ -236,13 +237,8 @@ abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
         hintHelpers = new HintHelpers(collateralRegistry);
         multiTroveGetter = new MultiTroveGetter(collateralRegistry);
         
-        // 15. NOW set FINAL addresses in the REAL addressesRegistry (the last one we created)
-        // This is the ONLY time we call setAddresses on the final registry
-        // Previous registries were temporary and already had setAddresses called
-        AddressesRegistry finalRegistry = new AddressesRegistry(
-            address(this), CCR, MCR, BCR, SCR, LIQUIDATION_PENALTY_SP, LIQUIDATION_PENALTY_REDISTRIBUTION
-        );
-        
+        // 15. NOW set all addresses in the addressesRegistry
+        // All contracts have been deployed and can now be registered
         IAddressesRegistry.AddressVars memory finalVars = IAddressesRegistry.AddressVars({
             collToken: IERC20Metadata(address(collToken)),
             borrowerOperations: IBorrowerOperations(address(borrowerOperations)),
@@ -263,10 +259,7 @@ abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
             boldToken: IBoldToken(address(boldToken)),
             WETH: IWETH(address(collToken))
         });
-        finalRegistry.setAddresses(finalVars);
-        
-        // Update addressesRegistry to point to the final one
-        addressesRegistry = finalRegistry;
+        addressesRegistry.setAddresses(finalVars);
         
         // 16. Configure BoldToken with branch addresses
         boldToken.setBranchAddresses(
