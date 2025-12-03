@@ -14,3 +14,12 @@
 	path = .claude
 	url = https://github.com/Recon-Fuzz/ai-agent-primers
 	branch = feat/improved-coverage-flows
+[submodule "contracts/lib/chimera"]
+	path = contracts/lib/chimera
+	url = https://github.com/Recon-Fuzz/chimera
+[submodule "contracts/lib/setup-helpers"]
+	path = contracts/lib/setup-helpers
+	url = https://github.com/Recon-Fuzz/setup-helpers
+[submodule ".opencode"]
+	path = .opencode
+	url = https://github.com/Recon-Fuzz/ai-agent-primers
