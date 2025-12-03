@@ -1,0 +1,269 @@
+{
+  "borrowerOperations_addColl": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_adjustTrove": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_adjustTroveInterestRate": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_adjustZombieTrove": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_applyPendingDebt": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_claimCollateral": {
+    "prerequisite_functions": []
+  },
+  "borrowerOperations_closeTrove": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_kickFromBatch": {
+    "prerequisite_functions": ["borrowerOperations_openTroveAndJoinInterestBatchManager"]
+  },
+  "borrowerOperations_lowerBatchManagementFee": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "borrowerOperations_onLiquidateTrove": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_openTrove": {
+    "prerequisite_functions": []
+  },
+  "borrowerOperations_openTroveAndJoinInterestBatchManager": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "borrowerOperations_registerBatchManager": {
+    "prerequisite_functions": []
+  },
+  "borrowerOperations_removeFromBatch": {
+    "prerequisite_functions": ["borrowerOperations_openTroveAndJoinInterestBatchManager"]
+  },
+  "borrowerOperations_removeInterestIndividualDelegate": {
+    "prerequisite_functions": ["borrowerOperations_setInterestIndividualDelegate"]
+  },
+  "borrowerOperations_repayBold": {
+    "prerequisite_functions": ["borrowerOperations_openTrove", "borrowerOperations_withdrawBold"]
+  },
+  "borrowerOperations_setAddManager": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_setBatchManagerAnnualInterestRate": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "borrowerOperations_setInterestBatchManager": {
+    "prerequisite_functions": ["borrowerOperations_openTrove", "borrowerOperations_registerBatchManager"]
+  },
+  "borrowerOperations_setInterestIndividualDelegate": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_setRemoveManager": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_setRemoveManagerWithReceiver": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_shutdown": {
+    "prerequisite_functions": []
+  },
+  "borrowerOperations_shutdownFromOracleFailure": {
+    "prerequisite_functions": []
+  },
+  "borrowerOperations_switchBatchManager": {
+    "prerequisite_functions": ["borrowerOperations_openTroveAndJoinInterestBatchManager", "borrowerOperations_registerBatchManager"]
+  },
+  "borrowerOperations_withdrawBold": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "borrowerOperations_withdrawColl": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "collSurplusPool_accountSurplus": {
+    "prerequisite_functions": []
+  },
+  "collSurplusPool_claimColl": {
+    "prerequisite_functions": ["collSurplusPool_accountSurplus"]
+  },
+  "collateralRegistry_redeemCollateral": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "sortedTroves_insert": {
+    "prerequisite_functions": []
+  },
+  "sortedTroves_insertIntoBatch": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "sortedTroves_reInsert": {
+    "prerequisite_functions": ["sortedTroves_insert"]
+  },
+  "sortedTroves_reInsertBatch": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "sortedTroves_remove": {
+    "prerequisite_functions": ["sortedTroves_insert"]
+  },
+  "sortedTroves_removeFromBatch": {
+    "prerequisite_functions": ["sortedTroves_insertIntoBatch"]
+  },
+  "stabilityPool_claimAllCollGains": {
+    "prerequisite_functions": ["stabilityPool_provideToSP"]
+  },
+  "stabilityPool_offset": {
+    "prerequisite_functions": ["stabilityPool_provideToSP"]
+  },
+  "stabilityPool_provideToSP": {
+    "prerequisite_functions": []
+  },
+  "stabilityPool_triggerBoldRewards": {
+    "prerequisite_functions": []
+  },
+  "stabilityPool_withdrawFromSP": {
+    "prerequisite_functions": ["stabilityPool_provideToSP"]
+  },
+  "troveManager_batchLiquidateTroves": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "troveManager_getUnbackedPortionPriceAndRedeemability": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onAdjustTrove": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onAdjustTroveInsideBatch": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onAdjustTroveInterestRate": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onApplyTroveInterest": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onCloseTrove": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onLowerBatchManagerAnnualFee": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onOpenTrove": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onOpenTroveAndJoinBatch": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onRegisterBatchManager": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onRemoveFromBatch": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onSetBatchManagerAnnualInterestRate": {
+    "prerequisite_functions": []
+  },
+  "troveManager_onSetInterestBatchManager": {
+    "prerequisite_functions": []
+  },
+  "troveManager_redeemCollateral": {
+    "prerequisite_functions": ["borrowerOperations_openTrove"]
+  },
+  "troveManager_setTroveStatusToActive": {
+    "prerequisite_functions": []
+  },
+  "troveManager_shutdown": {
+    "prerequisite_functions": []
+  },
+  "troveManager_urgentRedemption": {
+    "prerequisite_functions": ["borrowerOperations_openTrove", "borrowerOperations_shutdown"]
+  },
+  "activePool_accountForReceivedColl": {
+    "prerequisite_functions": []
+  },
+  "activePool_mintAggInterest": {
+    "prerequisite_functions": []
+  },
+  "activePool_mintAggInterestAndAccountForTroveChange": {
+    "prerequisite_functions": []
+  },
+  "activePool_mintBatchManagementFeeAndAccountForChange": {
+    "prerequisite_functions": ["borrowerOperations_registerBatchManager"]
+  },
+  "activePool_receiveColl": {
+    "prerequisite_functions": []
+  },
+  "activePool_sendColl": {
+    "prerequisite_functions": []
+  },
+  "activePool_sendCollToDefaultPool": {
+    "prerequisite_functions": []
+  },
+  "activePool_setShutdownFlag": {
+    "prerequisite_functions": []
+  },
+  "boldToken_approve": {
+    "prerequisite_functions": []
+  },
+  "boldToken_burn": {
+    "prerequisite_functions": ["boldToken_mint"]
+  },
+  "boldToken_decreaseAllowance": {
+    "prerequisite_functions": ["boldToken_approve"]
+  },
+  "boldToken_increaseAllowance": {
+    "prerequisite_functions": []
+  },
+  "boldToken_mint": {
+    "prerequisite_functions": []
+  },
+  "boldToken_permit": {
+    "prerequisite_functions": []
+  },
+  "boldToken_returnFromPool": {
+    "prerequisite_functions": ["boldToken_sendToPool"]
+  },
+  "boldToken_sendToPool": {
+    "prerequisite_functions": []
+  },
+  "boldToken_setBranchAddresses": {
+    "prerequisite_functions": []
+  },
+  "boldToken_setCollateralRegistry": {
+    "prerequisite_functions": []
+  },
+  "boldToken_transfer": {
+    "prerequisite_functions": []
+  },
+  "boldToken_transferFrom": {
+    "prerequisite_functions": ["boldToken_approve"]
+  },
+  "defaultPool_decreaseBoldDebt": {
+    "prerequisite_functions": ["defaultPool_increaseBoldDebt"]
+  },
+  "defaultPool_increaseBoldDebt": {
+    "prerequisite_functions": []
+  },
+  "defaultPool_receiveColl": {
+    "prerequisite_functions": []
+  },
+  "defaultPool_sendCollToActivePool": {
+    "prerequisite_functions": ["defaultPool_receiveColl"]
+  },
+  "troveNFT_approve": {
+    "prerequisite_functions": []
+  },
+  "troveNFT_burn": {
+    "prerequisite_functions": ["troveNFT_mint"]
+  },
+  "troveNFT_mint": {
+    "prerequisite_functions": []
+  },
+  "troveNFT_safeTransferFrom": {
+    "prerequisite_functions": ["troveNFT_mint"]
+  },
+  "troveNFT_setApprovalForAll": {
+    "prerequisite_functions": []
+  },
+  "troveNFT_transferFrom": {
+    "prerequisite_functions": ["troveNFT_mint"]
+  }
+}
