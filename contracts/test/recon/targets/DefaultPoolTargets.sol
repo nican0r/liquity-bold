@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: GPL-2.0
+pragma solidity ^0.8.0;
+
+import {BaseTargetFunctions} from "@chimera/BaseTargetFunctions.sol";
+import {BeforeAfter} from "../BeforeAfter.sol";
+import {Properties} from "../Properties.sol";
+// Chimera deps
+import {vm} from "@chimera/Hevm.sol";
+
+// Helpers
+import {Panic} from "@recon/Panic.sol";
+
+import "src/DefaultPool.sol";
+
+abstract contract DefaultPoolTargets is
+    BaseTargetFunctions,
+    Properties
+{
+    /// CUSTOM TARGET FUNCTIONS - Add your own target functions here ///
+
+
+    /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
+
+    function defaultPool_decreaseBoldDebt(uint256 _amount) public asActor {
+        defaultPool.decreaseBoldDebt(_amount);
+    }
+
+    function defaultPool_increaseBoldDebt(uint256 _amount) public asActor {
+        defaultPool.increaseBoldDebt(_amount);
+    }
+
+    function defaultPool_receiveColl(uint256 _amount) public asActor {
+        defaultPool.receiveColl(_amount);
+    }
+
+    function defaultPool_sendCollToActivePool(uint256 _amount) public asActor {
+        defaultPool.sendCollToActivePool(_amount);
+    }
+}
