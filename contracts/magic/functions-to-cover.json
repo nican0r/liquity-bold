@@ -1,0 +1,198 @@
+{
+  "ActivePool": {
+    "functions_to_cover": [
+      "_accountForReceivedColl",
+      "_accountForSendColl",
+      "_mintAggInterest",
+      "_mintBatchManagementFeeAndAccountForChange",
+      "_requireCallerIsBOorSP",
+      "_requireCallerIsBOorTroveM",
+      "_requireCallerIsBOorTroveMorSP",
+      "_requireCallerIsBorrowerOperationsOrDefaultPool",
+      "_requireCallerIsTroveManager",
+      "accountForReceivedColl",
+      "calcPendingAggBatchManagementFee",
+      "calcPendingAggInterest",
+      "mintAggInterest",
+      "mintAggInterestAndAccountForTroveChange",
+      "mintBatchManagementFeeAndAccountForChange",
+      "receiveColl",
+      "sendColl",
+      "sendCollToDefaultPool",
+      "setShutdownFlag"
+    ]
+  },
+  "BoldToken": {
+    "functions_to_cover": [
+      "_requireCallerIsBOorAP",
+      "_requireCallerIsCRorBOorTMorSP",
+      "_requireCallerIsStabilityPool",
+      "_requireValidRecipient",
+      "burn",
+      "mint",
+      "returnFromPool",
+      "sendToPool",
+      "setBranchAddresses",
+      "setCollateralRegistry",
+      "transfer",
+      "transferFrom"
+    ]
+  },
+  "CollSurplusPool": {
+    "functions_to_cover": [
+      "_requireCallerIsBorrowerOperations",
+      "_requireCallerIsTroveManager",
+      "accountSurplus",
+      "claimColl"
+    ]
+  },
+  "CollateralRegistry": {
+    "functions_to_cover": [
+      "_calcDecayedBaseRate",
+      "_calcRedemptionRate",
+      "_getUpdatedBaseRateFromRedemption",
+      "_minutesPassedSinceLastFeeOp",
+      "_requireAmountGreaterThanZero",
+      "_requireValidMaxFeePercentage",
+      "_updateBaseRateAndGetRedemptionRate",
+      "_updateLastFeeOpTime",
+      "getTroveManager",
+      "redeemCollateral"
+    ]
+  },
+  "Context": {
+    "functions_to_cover": [
+      "_msgSender"
+    ]
+  },
+  "DefaultPool": {
+    "functions_to_cover": [
+      "_requireCallerIsActivePool",
+      "_requireCallerIsTroveManager",
+      "decreaseBoldDebt",
+      "increaseBoldDebt",
+      "receiveColl",
+      "sendCollToActivePool"
+    ]
+  },
+  "EIP712": {
+    "functions_to_cover": [
+      "_buildDomainSeparator",
+      "_domainSeparatorV4",
+      "_hashTypedDataV4"
+    ]
+  },
+  "ERC20": {
+    "functions_to_cover": [
+      "_afterTokenTransfer",
+      "_approve",
+      "_beforeTokenTransfer",
+      "_burn",
+      "_mint",
+      "_spendAllowance",
+      "_transfer",
+      "allowance",
+      "approve",
+      "decreaseAllowance",
+      "increaseAllowance",
+      "transfer",
+      "transferFrom"
+    ]
+  },
+  "ERC20Permit": {
+    "functions_to_cover": [
+      "_useNonce",
+      "permit"
+    ]
+  },
+  "ERC721": {
+    "functions_to_cover": [
+      "_afterTokenTransfer",
+      "_approve",
+      "_beforeTokenTransfer",
+      "_burn",
+      "_checkOnERC721Received",
+      "_exists",
+      "_isApprovedOrOwner",
+      "_mint",
+      "_ownerOf",
+      "_requireMinted",
+      "_safeTransfer",
+      "_setApprovalForAll",
+      "_transfer",
+      "approve",
+      "getApproved",
+      "isApprovedForAll",
+      "ownerOf",
+      "safeTransferFrom",
+      "setApprovalForAll",
+      "transferFrom"
+    ]
+  },
+  "SortedTroves": {
+    "functions_to_cover": [
+      "_ascendList",
+      "_ascendOne",
+      "_descendAndAscendList",
+      "_descendList",
+      "_descendOne",
+      "_findInsertPosition",
+      "_insertSlice",
+      "_insertSliceIntoVerifiedPosition",
+      "_reInsertSlice",
+      "_removeSlice",
+      "_requireCallerIsBOorTM",
+      "_requireCallerIsBorrowerOperations",
+      "_skipToBatchHead",
+      "_skipToBatchTail",
+      "_validInsertPosition",
+      "contains",
+      "insert",
+      "insertIntoBatch",
+      "isBatchedNode",
+      "reInsert",
+      "reInsertBatch",
+      "remove",
+      "removeFromBatch"
+    ]
+  },
+  "StabilityPool": {
+    "functions_to_cover": [
+      "_decreaseYieldGainsOwed",
+      "_getNewStashedCollAndCollToSend",
+      "_getYieldToKeepOrSend",
+      "_moveOffsetCollAndDebt",
+      "_requireCallerIsActivePool",
+      "_requireCallerIsTroveManager",
+      "_requireNonZeroAmount",
+      "_requireUserHasDeposit",
+      "_requireUserHasNoDeposit",
+      "_sendBoldtoDepositor",
+      "_sendCollGainToDepositor",
+      "_updateDepositAndSnapshots",
+      "_updateTotalBoldDeposits",
+      "_updateYieldRewardsSum",
+      "claimAllCollGains",
+      "getCompoundedBoldDeposit",
+      "getDepositorCollGain",
+      "getDepositorYieldGain",
+      "offset",
+      "provideToSP",
+      "triggerBoldRewards",
+      "withdrawFromSP"
+    ]
+  },
+  "TroveNFT": {
+    "functions_to_cover": [
+      "_requireCallerIsTroveManager",
+      "burn",
+      "mint"
+    ]
+  },
+  "Unknown": {
+    "functions_to_cover": [
+      "isNotZero",
+      "isZero"
+    ]
+  }
+}
