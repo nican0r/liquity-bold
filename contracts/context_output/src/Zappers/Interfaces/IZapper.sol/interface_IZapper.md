@@ -1,0 +1,85 @@
+# Interface: IZapper
+
+## Metadata
+
+- **Name**: IZapper
+- **Type**: Interface
+- **Path**: src/Zappers/Interfaces/IZapper.sol
+
+## Structs
+
+### OpenTroveParams
+
+```solidity
+struct OpenTroveParams {
+    address owner;
+    uint256 ownerIndex;
+    uint256 collAmount;
+    uint256 boldAmount;
+    uint256 upperHint;
+    uint256 lowerHint;
+    uint256 annualInterestRate;
+    address batchManager;
+    uint256 maxUpfrontFee;
+    address addManager;
+    address removeManager;
+    address receiver;
+}
+```
+
+### CloseTroveParams
+
+```solidity
+struct CloseTroveParams {
+    uint256 troveId;
+    uint256 flashLoanAmount;
+    uint256 minExpectedCollateral;
+    address receiver;
+}
+```
+
+## Public/External Functions
+
+### flashLoanProvider()
+
+- **Signature**: `flashLoanProvider()`
+- **Visibility**: external
+- **Source Range**: 683:72:203
+
+**Signature:**
+```solidity
+function flashLoanProvider() external view returns (IFlashLoanProvider);;
+```
+
+### exchange()
+
+- **Signature**: `exchange()`
+- **Visibility**: external
+- **Source Range**: 761:54:203
+
+**Signature:**
+```solidity
+function exchange() external view returns (IExchange);;
+```
+
+### openTroveWithRawETH(struct IZapper.OpenTroveParams)
+
+- **Signature**: `openTroveWithRawETH(struct IZapper.OpenTroveParams)`
+- **Visibility**: external
+- **Source Range**: 821:98:203
+
+**Signature:**
+```solidity
+function openTroveWithRawETH(OpenTroveParams calldata _params) external payable returns (uint256);;
+```
+
+### closeTroveFromCollateral(uint256,uint256,uint256)
+
+- **Signature**: `closeTroveFromCollateral(uint256,uint256,uint256)`
+- **Visibility**: external
+- **Source Range**: 925:127:203
+
+**Signature:**
+```solidity
+function closeTroveFromCollateral(uint256 _troveId, uint256 _flashLoanAmount, uint256 _minExpectedCollateral) external;;
+```

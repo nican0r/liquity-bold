@@ -1,0 +1,50 @@
+# Function: receiveFlashLoanOnCloseTroveFromCollateral(struct IZapper.CloseTroveParams,uint256)
+
+**Contract**: [src/Zappers/LeverageWETHZapper.sol/contract_LeverageWETHZapper.md]
+
+## Metadata
+
+- **Contract**: LeverageWETHZapper
+- **Signature**: `receiveFlashLoanOnCloseTroveFromCollateral(struct IZapper.CloseTroveParams,uint256)`
+- **Visibility**: external
+- **Source Range**: 10971:1495:226
+- **Inherited From**: WETHZapper
+
+## Implementation
+
+```solidity
+function receiveFlashLoanOnCloseTroveFromCollateral(CloseTroveParams calldata _params, uint256 _effectiveFlashLoanAmount) external {
+    require(msg.sender == address(flashLoanProvider), "WZ: Caller not FlashLoan provider");
+    LatestTroveData memory trove = troveManager.getLatestTroveData(_params.troveId);
+    uint256 collLeft = trove.entireColl - _params.flashLoanAmount;
+    require(collLeft >= _params.minExpectedCollateral, "WZ: Not enough collateral received");
+    exchange.swapToBold(_effectiveFlashLoanAmount, trove.entireDebt);
+    borrowerOperations.closeTrove(_params.troveId);
+    WETH.transfer(address(flashLoanProvider), _params.flashLoanAmount);
+    uint256 ethToSendBack = collLeft + ETH_GAS_COMPENSATION;
+    WETH.withdraw(ethToSendBack);
+    (bool success, ) = _params.receiver.call{value: ethToSendBack}("");
+    require(success, "WZ: Sending ETH failed");
+}
+```
+
+## External Calls
+
+- **ITroveManager::getLatestTroveData(uint256)**
+- **IExchange::swapToBold(uint256,uint256)**
+- **IBorrowerOperations::closeTrove(uint256)**
+- **IWETH::transfer(address,uint256)**
+- **IWETH::withdraw(uint256)**
+- **unknown::unknown**
+
+## Native Transfers
+
+- **WETH** (computed)
+
+## Call Tree
+
+```
+┌─ [0] ⚙️ FUNCTION: WETHZapper.receiveFlashLoanOnCloseTroveFromCollateral(struct IZapper.CloseTroveParams,uint256) (NodeID: 0)
+    💬 Args: [no args]
+    👁️  Def: external
+```

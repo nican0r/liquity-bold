@@ -1,0 +1,63 @@
+# Function: getRedemptionRate()
+
+**Contract**: [test/TestContracts/CollateralRegistryTester.sol/contract_CollateralRegistryTester.md]
+
+## Metadata
+
+- **Contract**: CollateralRegistryTester
+- **Signature**: `getRedemptionRate()`
+- **Visibility**: external
+- **Source Range**: 11451:123:130
+- **Inherited From**: CollateralRegistry
+
+## Implementation
+
+```solidity
+function getRedemptionRate() override external view returns (uint256) {
+    return _calcRedemptionRate(baseRate);
+}
+```
+
+## Related Implementations
+
+### _calcRedemptionRate(uint256)
+
+- **Kind**: internal
+- **Source**: 10941:235:130
+- **Link**: `src/CollateralRegistry.sol:CollateralRegistry:_calcRedemptionRate(uint256)`
+
+```solidity
+function _calcRedemptionRate(uint256 _baseRate) internal pure returns (uint256) {
+    return LiquityMath._min(REDEMPTION_FEE_FLOOR + _baseRate, DECIMAL_PRECISION);
+}
+```
+
+### _min(uint256,uint256)
+
+- **Kind**: internal
+- **Source**: 136:113:137
+- **Link**: `src/Dependencies/LiquityMath.sol:LiquityMath:_min(uint256,uint256)`
+
+```solidity
+function _min(uint256 _a, uint256 _b) internal pure returns (uint256) {
+    return (_a < _b) ? _a : _b;
+}
+```
+
+## State Variable Reads
+
+- **baseRate** (`uint256`)
+
+## Call Tree
+
+```
+┌─ [0] ⚙️ FUNCTION: CollateralRegistry.getRedemptionRate() (NodeID: 0)
+    💬 Args: [no args]
+    👁️  Def: external
+  └─ [1] ⚙️ FUNCTION: CollateralRegistry._calcRedemptionRate(uint256) (NodeID: 1)
+      💬 Args: [baseRate]
+      👁️  Def: internal
+    └─ [2] ⚙️ FUNCTION: LiquityMath._min(uint256,uint256) (NodeID: 2)
+        💬 Args: [REDEMPTION_FEE_FLOOR + _baseRate, DECIMAL_PRECISION]
+        👁️  Def: internal
+```
