@@ -21,10 +21,6 @@ abstract contract CollSurplusPoolTargets is
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 
-    function collSurplusPool_accountSurplus(address _account, uint256 _amount) public asActor {
-        collSurplusPool.accountSurplus(_account, _amount);
-    }
-
     function collSurplusPool_claimColl(address _account) public asActor {
         collSurplusPool.claimColl(_account);
     }

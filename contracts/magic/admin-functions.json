@@ -1,0 +1,94 @@
+[
+  {
+    "contract_name": "ActivePoolTargets",
+    "functions": [
+      "activePool_accountForReceivedColl",
+      "activePool_mintAggInterest",
+      "activePool_mintAggInterestAndAccountForTroveChange",
+      "activePool_mintBatchManagementFeeAndAccountForChange",
+      "activePool_receiveColl",
+      "activePool_sendColl",
+      "activePool_sendCollToDefaultPool",
+      "activePool_setShutdownFlag"
+    ]
+  },
+  {
+    "contract_name": "BoldTokenTargets",
+    "functions": [
+      "boldToken_burn",
+      "boldToken_mint",
+      "boldToken_returnFromPool",
+      "boldToken_sendToPool",
+      "boldToken_setBranchAddresses",
+      "boldToken_setCollateralRegistry"
+    ]
+  },
+  {
+    "contract_name": "BorrowerOperationsTargets",
+    "functions": [
+      "borrowerOperations_onLiquidateTrove",
+      "borrowerOperations_shutdown",
+      "borrowerOperations_shutdownFromOracleFailure"
+    ]
+  },
+  {
+    "contract_name": "CollSurplusPoolTargets",
+    "functions": [
+      "collSurplusPool_accountSurplus"
+    ]
+  },
+  {
+    "contract_name": "DefaultPoolTargets",
+    "functions": [
+      "defaultPool_decreaseBoldDebt",
+      "defaultPool_increaseBoldDebt",
+      "defaultPool_receiveColl",
+      "defaultPool_sendCollToActivePool"
+    ]
+  },
+  {
+    "contract_name": "SortedTrovesTargets",
+    "functions": [
+      "sortedTroves_insert",
+      "sortedTroves_insertIntoBatch",
+      "sortedTroves_reInsert",
+      "sortedTroves_reInsertBatch",
+      "sortedTroves_remove",
+      "sortedTroves_removeFromBatch"
+    ]
+  },
+  {
+    "contract_name": "StabilityPoolTargets",
+    "functions": [
+      "stabilityPool_offset",
+      "stabilityPool_triggerBoldRewards"
+    ]
+  },
+  {
+    "contract_name": "TroveManagerTargets",
+    "functions": [
+      "troveManager_onAdjustTrove",
+      "troveManager_onAdjustTroveInsideBatch",
+      "troveManager_onAdjustTroveInterestRate",
+      "troveManager_onApplyTroveInterest",
+      "troveManager_onCloseTrove",
+      "troveManager_onLowerBatchManagerAnnualFee",
+      "troveManager_onOpenTrove",
+      "troveManager_onOpenTroveAndJoinBatch",
+      "troveManager_onRegisterBatchManager",
+      "troveManager_onRemoveFromBatch",
+      "troveManager_onSetBatchManagerAnnualInterestRate",
+      "troveManager_onSetInterestBatchManager",
+      "troveManager_redeemCollateral",
+      "troveManager_setTroveStatusToActive",
+      "troveManager_shutdown"
+    ]
+  },
+  {
+    "contract_name": "TroveNFTTargets",
+    "functions": [
+      "troveNFT_burn",
+      "troveNFT_mint"
+    ]
+  }
+]

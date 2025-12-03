@@ -57,10 +57,6 @@ abstract contract BorrowerOperationsTargets is
         borrowerOperations.lowerBatchManagementFee(_newAnnualManagementFee);
     }
 
-    function borrowerOperations_onLiquidateTrove(uint256 _troveId) public asActor {
-        borrowerOperations.onLiquidateTrove(_troveId);
-    }
-
     function borrowerOperations_openTrove(address _owner, uint256 _ownerIndex, uint256 _collAmount, uint256 _boldAmount, uint256 _upperHint, uint256 _lowerHint, uint256 _annualInterestRate, uint256 _maxUpfrontFee, address _addManager, address _removeManager, address _receiver) public asActor {
         borrowerOperations.openTrove(_owner, _ownerIndex, _collAmount, _boldAmount, _upperHint, _lowerHint, _annualInterestRate, _maxUpfrontFee, _addManager, _removeManager, _receiver);
     }
@@ -107,14 +103,6 @@ abstract contract BorrowerOperationsTargets is
 
     function borrowerOperations_setRemoveManagerWithReceiver(uint256 _troveId, address _manager, address _receiver) public asActor {
         borrowerOperations.setRemoveManagerWithReceiver(_troveId, _manager, _receiver);
-    }
-
-    function borrowerOperations_shutdown() public asActor {
-        borrowerOperations.shutdown();
-    }
-
-    function borrowerOperations_shutdownFromOracleFailure() public asActor {
-        borrowerOperations.shutdownFromOracleFailure();
     }
 
     function borrowerOperations_switchBatchManager(uint256 _troveId, uint256 _removeUpperHint, uint256 _removeLowerHint, address _newBatchManager, uint256 _addUpperHint, uint256 _addLowerHint, uint256 _maxUpfrontFee) public asActor {

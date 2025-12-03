@@ -21,19 +21,4 @@ abstract contract DefaultPoolTargets is
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 
-    function defaultPool_decreaseBoldDebt(uint256 _amount) public asActor {
-        defaultPool.decreaseBoldDebt(_amount);
-    }
-
-    function defaultPool_increaseBoldDebt(uint256 _amount) public asActor {
-        defaultPool.increaseBoldDebt(_amount);
-    }
-
-    function defaultPool_receiveColl(uint256 _amount) public asActor {
-        defaultPool.receiveColl(_amount);
-    }
-
-    function defaultPool_sendCollToActivePool(uint256 _amount) public asActor {
-        defaultPool.sendCollToActivePool(_amount);
-    }
 }

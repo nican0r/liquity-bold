@@ -25,14 +25,6 @@ abstract contract TroveNFTTargets is
         troveNFT.approve(to, tokenId);
     }
 
-    function troveNFT_burn(uint256 _troveId) public asActor {
-        troveNFT.burn(_troveId);
-    }
-
-    function troveNFT_mint(address _owner, uint256 _troveId) public asActor {
-        troveNFT.mint(_owner, _troveId);
-    }
-
     function troveNFT_safeTransferFrom(address from, address to, uint256 tokenId) public asActor {
         troveNFT.safeTransferFrom(from, to, tokenId);
     }
