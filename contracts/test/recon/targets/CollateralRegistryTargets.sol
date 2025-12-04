@@ -18,6 +18,21 @@ abstract contract CollateralRegistryTargets is
 {
     /// CUSTOM TARGET FUNCTIONS - Add your own target functions here ///
 
+    // Clamped handler for redeemCollateral with max BOLD amount
+    function collateralRegistry_redeemCollateral_clamped_max() public asActor {
+        collateralRegistry.redeemCollateral(boldToken.balanceOf(_getActor()), 5, 5e16);
+    }
+
+    // Clamped handler for redeemCollateral with 1000 BOLD
+    function collateralRegistry_redeemCollateral_clamped_1000() public asActor {
+        collateralRegistry.redeemCollateral(1000e18, 10, 1e17);
+    }
+
+    // Clamped handler for redeemCollateral with high iterations
+    function collateralRegistry_redeemCollateral_clamped_highIter() public asActor {
+        collateralRegistry.redeemCollateral(boldToken.balanceOf(_getActor()), 50, 1e18);
+    }
+
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 

@@ -18,6 +18,21 @@ abstract contract TroveManagerTargets is
 {
     /// CUSTOM TARGET FUNCTIONS - Add your own target functions here ///
 
+    // Clamped handler for batchLiquidateTroves with empty array
+    function troveManager_batchLiquidateTroves_clamped_empty() public asActor {
+        troveManager.batchLiquidateTroves(new uint256[](0));
+    }
+
+    // Clamped handler for urgentRedemption with max BOLD
+    function troveManager_urgentRedemption_clamped_max() public asActor {
+        troveManager.urgentRedemption(boldToken.balanceOf(_getActor()), new uint256[](0), 1e18);
+    }
+
+    // Clamped handler for urgentRedemption with 1000 BOLD
+    function troveManager_urgentRedemption_clamped_1000() public asActor {
+        troveManager.urgentRedemption(1000e18, new uint256[](0), 5e18);
+    }
+
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 

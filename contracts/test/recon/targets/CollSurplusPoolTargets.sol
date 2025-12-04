@@ -18,6 +18,18 @@ abstract contract CollSurplusPoolTargets is
 {
     /// CUSTOM TARGET FUNCTIONS - Add your own target functions here ///
 
+    // Clamped handler for claimColl with current actor
+    function collSurplusPool_claimColl_clamped_self() public asActor {
+        address _account = _getActor();
+        collSurplusPool.claimColl(_account);
+    }
+
+    // Clamped handler for claimColl with first actor
+    function collSurplusPool_claimColl_clamped_actor0() public asActor {
+        address _account = _getActors()[0];
+        collSurplusPool.claimColl(_account);
+    }
+
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 

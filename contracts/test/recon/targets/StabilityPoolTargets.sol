@@ -18,6 +18,31 @@ abstract contract StabilityPoolTargets is
 {
     /// CUSTOM TARGET FUNCTIONS - Add your own target functions here ///
 
+    // Clamped handler for provideToSP with max BOLD balance
+    function stabilityPool_provideToSP_clamped_max(bool _doClaim) public asActor {
+        stabilityPool.provideToSP(boldToken.balanceOf(_getActor()), _doClaim);
+    }
+
+    // Clamped handler for provideToSP with 1000 BOLD
+    function stabilityPool_provideToSP_clamped_1000(bool _doClaim) public asActor {
+        stabilityPool.provideToSP(1000e18, _doClaim);
+    }
+
+    // Clamped handler for provideToSP with 10000 BOLD
+    function stabilityPool_provideToSP_clamped_10000(bool _doClaim) public asActor {
+        stabilityPool.provideToSP(10000e18, _doClaim);
+    }
+
+    // Clamped handler for withdrawFromSP with max compounded deposit
+    function stabilityPool_withdrawFromSP_clamped_max(bool _doClaim) public asActor {
+        stabilityPool.withdrawFromSP(stabilityPool.getCompoundedBoldDeposit(_getActor()), _doClaim);
+    }
+
+    // Clamped handler for withdrawFromSP with 1000 BOLD
+    function stabilityPool_withdrawFromSP_clamped_1000(bool _doClaim) public asActor {
+        stabilityPool.withdrawFromSP(1000e18, _doClaim);
+    }
+
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
 
