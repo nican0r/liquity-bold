@@ -1,0 +1,21 @@
+{
+  "source_contracts": [
+    "BorrowerOperations",
+    "TroveManager",
+    "ActivePool",
+    "StabilityPool",
+    "BoldToken",
+    "SortedTroves",
+    "CollSurplusPool",
+    "DefaultPool",
+    "CollateralRegistry",
+    "TroveNFT"
+  ],
+  "mocked_contracts": [
+    "IPriceFeed",
+    "IWETH",
+    "AggregatorV3Interface",
+    "IInterestRouter",
+    "IMetadataNFT"
+  ]
+}
