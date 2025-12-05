@@ -1,151 +1,181 @@
-# Echidna Run Failure Fix - Missing Compiled Artifacts
+# Echidna Run Failure Fix
 
-## Issue Identified (December 5, 2025 - Latest Run)
+## Issue Identified
 
-### Status: ✅ FIX IMPLEMENTED
+### Root Cause: Incompatible Cheatcode in TestDeployer
 
-### Root Cause
+Echidna fails to deploy the CryticTester contract with the following error:
 
-Echidna was hanging at the compilation phase with the following output:
 ```
-[2025-12-05 12:23:37.67] Compiling ....
+error BadCheatCode "Cannot understand cheatcode." 0xd930a0e6
+error Revert 0x
 ```
 
-The issue was that the `out/` directory containing compiled Foundry artifacts **did not exist**. The current `echidna.yaml` configuration includes:
+### Analysis
 
+The fuzzing setup (`test/recon/Setup.sol`) uses `TestDeployer` from `test/TestContracts/Deployment.t.sol` to deploy all protocol contracts. This was done intentionally to:
+1. Avoid code duplication
+2. Maintain consistency with unit tests  
+3. Simplify maintenance
+
+However, `TestDeployer` was written for **Foundry tests** and uses Foundry-specific cheatcodes that are **not supported by Echidna's Hevm implementation**.
+
+### Configuration Issue Fixed
+
+Before addressing the cheatcode issue, there was also a configuration problem with `echidna.yaml`:
+
+**Original (Broken) Configuration:**
 ```yaml
 cryticArgs: ["--compile-force-framework=foundry", "--foundry-out-dir=out", "--foundry-ignore-compile"]
 ```
 
-The `--foundry-ignore-compile` flag tells crytic-compile to **skip compilation entirely** and use existing pre-compiled artifacts from the `out/` directory. However, when the `out/` directory doesn't exist or is empty, Echidna hangs during the compilation phase because:
-
-1. It's configured to ignore compilation (`--foundry-ignore-compile`)
-2. No artifacts exist to load from `out/`
-3. The process stalls without a clear error message
-
-### Solution Applied
-
-**Pre-compile the contracts before running Echidna:**
-
-```bash
-forge build
+**Problem:** The `--foundry-ignore-compile` flag tells crytic-compile to skip compilation and load pre-compiled artifacts from `out/`. However, crytic-compile 0.3.8 has a bug where it expects artifacts in a different JSON format than what Foundry produces, causing:
+```
+KeyError: 'output'
 ```
 
-This command:
-- Compiles all 283 Solidity files in ~55 seconds
-- Creates the `out/` directory with all necessary artifacts
-- Generates `out/CryticTester.sol/CryticTester.json` and other required files
-
-### Why This Configuration Exists
-
-The `--foundry-ignore-compile` flag was added in previous fixes to avoid the "build-info hang" issue where `forge build --build-info` would take extremely long (several minutes) to generate and parse 134MB of build metadata for large projects.
-
-Using pre-compilation + `--foundry-ignore-compile` provides:
-- ✅ Fast compilation (~55 seconds via `forge build`)
-- ✅ Fast Echidna startup (5-10 seconds)
-- ✅ No build-info parsing bottleneck
-- ✅ Consistent with standard Foundry workflow
-
-### Required Workflow
-
-**Before running Echidna, you MUST pre-compile:**
-
-```bash
-# Step 1: Compile contracts (required if out/ doesn't exist or is stale)
-forge build
-
-# Step 2: Run Echidna (will load pre-compiled artifacts)
-echidna . --contract CryticTester --config echidna.yaml
-```
-
-### Verification
-
-After running `forge build`, verify the artifacts exist:
-
-```bash
-# Check out/ directory exists
-ls -la out/
-
-# Check CryticTester artifact exists
-ls -la out/CryticTester.sol/CryticTester.json
-```
-
-Expected output:
-- `out/` directory with 277+ contract directories
-- `out/CryticTester.sol/CryticTester.json` file (~828KB)
-
-Then run Echidna:
-```bash
-echidna . --contract CryticTester --config echidna.yaml
-```
-
-Expected behavior:
-- No "Compiling ...." hang
-- Echidna loads contracts and starts fuzzing within 5-10 seconds
-- Fuzzing campaign begins successfully
-
-### Best Practices
-
-#### Create a Wrapper Script
-
-To avoid forgetting the pre-compilation step, create `run-echidna.sh`:
-
-```bash
-#!/bin/bash
-set -e
-
-echo "🔨 Compiling contracts..."
-forge build
-
-echo "🐛 Running Echidna fuzzer..."
-echidna . --contract CryticTester --config echidna.yaml
-```
-
-Usage:
-```bash
-chmod +x run-echidna.sh
-./run-echidna.sh
-```
-
-#### CI/CD Integration
-
-In continuous integration pipelines:
-
+**Fixed Configuration:**
 ```yaml
-- name: Build contracts
-  run: forge build
-
-- name: Run Echidna fuzzer
-  run: echidna . --contract CryticTester --config echidna.yaml --format text
+cryticArgs: ["--compile-force-framework=foundry", "--foundry-compile-all"]
+quiet: false
 ```
 
-### Common Errors and Solutions
+**Changes:**
+1. Removed `--foundry-ignore-compile` (causes KeyError)
+2. Added `--foundry-compile-all` (compiles everything, ~68 seconds)
+3. Changed `quiet: false` to see verbose output during debugging
 
-#### Error: "Compiling ...." (hangs indefinitely)
+### Compilation Performance
 
-**Cause**: `out/` directory doesn't exist or is empty
+With `--foundry-compile-all`:
+- **Compilation time:** ~68 seconds
+- **Slither analysis:** ~107 seconds
+- **Total startup time:** ~175 seconds (acceptable for fuzzing campaigns)
 
-**Solution**: Run `forge build` before Echidna
+This is much faster than the previous attempts with `--foundry-ignore-compile` which would hang indefinitely.
 
-#### Error: Echidna fuzzes old code after changes
+## Solution Options
 
-**Cause**: Stale artifacts in `out/`
+### Option 1: Remove TestDeployer Dependency (Recommended)
 
-**Solution**: Run `forge build` or `forge build --force` to recompile
+Modify `test/recon/Setup.sol` to deploy contracts directly without using `TestDeployer`. This requires:
 
-#### Error: Test contract not found
+1. **Create a Minimal Deployment Function**
+   - Deploy only the contracts needed for fuzzing
+   - Avoid Foundry-specific cheatcodes (mockCall, expectEmit, etc.)
+   - Use only Echidna-supported cheatcodes: `prank`, `deal`, `warp`, `roll`, `store`, `load`
 
-**Cause**: `CryticTester.sol` wasn't compiled
+2. **Identify Unsupported Cheatcodes in TestDeployer**
+   ```bash
+   grep -r "vm\." test/TestContracts/Deployment.t.sol | \
+     grep -v "prank\|deal\|warp\|roll\|store\|load\|sign\|addr" 
+   ```
 
-**Solution**: Ensure `forge build` completes successfully and check for `out/CryticTester.sol/CryticTester.json`
+3. **Rewrite Deployment Logic**
+   - Extract deployment steps from TestDeployer
+   - Remove test-specific logic (mocking, expectations)
+   - Ensure compatibility with Echidna's Hevm
 
-### Files Modified
+### Option 2: Conditional Deployment (Alternative)
 
-No files were modified for this fix. The issue was procedural - the user must run `forge build` before running Echidna when using the `--foundry-ignore-compile` configuration.
+Keep TestDeployer but add conditional logic to detect Echidna vs Foundry:
 
-### Configuration Details
+```solidity
+contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
+    function setup() internal virtual override {
+        // Check if running under Echidna
+        bool isEchidna = _isEchidna();
+        
+        if (isEchidna) {
+            // Use simplified deployment compatible with Echidna
+            _deployForEchidna();
+        } else {
+            // Use TestDeployer for Foundry tests
+            _deployWithTestDeployer();
+        }
+        
+        // Common setup continues...
+    }
+    
+    function _isEchidna() private view returns (bool) {
+        // Echidna uses specific deployer addresses
+        // Check if msg.sender matches Echidna's deployer
+        return msg.sender == address(0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38);
+    }
+}
+```
 
-Current `echidna.yaml` configuration:
+### Option 3: Fork TestDeployer (Quick Fix)
+
+Create `test/recon/EchidnaDeployer.sol` by copying TestDeployer and removing unsupported cheatcodes:
+
+1. Copy `test/TestContracts/Deployment.t.sol` → `test/recon/EchidnaDeployer.sol`
+2. Remove all `vm.mockCall`, `vm.expectEmit`, `vm.expectRevert`, etc.
+3. Keep only `vm.prank`, `vm.deal`, `vm.warp`, `vm.roll`
+4. Update Setup.sol to use EchidnaDeployer instead
+
+## Echidna-Supported Cheatcodes
+
+Based on `/lib/chimera/src/Hevm.sol`, Echidna supports:
+
+**Fully Supported:**
+- `vm.prank(address)` - Impersonate sender for next call
+- `vm.deal(address, uint256)` - Set ETH balance
+- `vm.warp(uint256)` - Set block.timestamp
+- `vm.roll(uint256)` - Set block.number
+- `vm.store(address, bytes32, bytes32)` - Set storage slot
+- `vm.load(address, bytes32)` - Read storage slot
+- `vm.sign(uint256, bytes32)` - Sign message with private key
+- `vm.addr(uint256)` - Get address from private key
+- `vm.assume(bool)` - Add fuzzing assumption
+- `vm.label(address, string)` - Label address for output
+- `vm.etch(address, bytes)` - Set contract bytecode
+- `vm.createFork(string)` - Create fork (limited support)
+- `vm.selectFork(uint256)` - Select active fork
+
+**NOT Supported (will cause "BadCheatCode" error):**
+- `vm.mockCall()` - Mock function calls
+- `vm.expectEmit()` - Expect event emission  
+- `vm.expectRevert()` - Expect revert
+- `vm.expectCall()` - Expect function call
+- `vm.startPrank()` - Start persistent prank
+- `vm.stopPrank()` - Stop persistent prank
+- `vm.recordLogs()` - Record emitted logs
+- `vm.getRecordedLogs()` - Get recorded logs
+- Any other advanced Foundry cheatcodes
+
+## Recommended Next Steps
+
+1. **Immediate Action:** Implement Option 3 (Fork TestDeployer)
+   - Fastest path to get Echidna running
+   - Minimal changes to existing setup
+   - Can refactor later
+
+2. **Steps to Implement:**
+   ```bash
+   # 1. Create EchidnaDeployer
+   cp test/TestContracts/Deployment.t.sol test/recon/EchidnaDeployer.sol
+   
+   # 2. Edit EchidnaDeployer.sol - remove unsupported cheatcodes
+   # (Manual editing required)
+   
+   # 3. Update Setup.sol
+   # Replace: import {TestDeployer} from "test/TestContracts/Deployment.t.sol";
+   # With: import {EchidnaDeployer} from "./EchidnaDeployer.sol";
+   
+   # 4. Test compilation
+   forge build
+   
+   # 5. Test Echidna
+   echidna . --contract CryticTester --config echidna.yaml
+   ```
+
+3. **Verification:**
+   - Echidna should complete deployment without cheatcode errors
+   - Contract initialization should succeed
+   - Fuzzing campaign should begin
+
+## Current echidna.yaml Configuration
 
 ```yaml
 testMode: "assertion"
@@ -155,89 +185,59 @@ corpusDir: "echidna"
 balanceAddr: 0x1043561a8829300000
 balanceContract: 0x1043561a8829300000
 filterFunctions: []
-cryticArgs: ["--compile-force-framework=foundry", "--foundry-out-dir=out", "--foundry-ignore-compile"]
+cryticArgs: ["--compile-force-framework=foundry", "--foundry-compile-all"]
 deployer: "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38"
 contractAddr: "0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496"
 shrinkLimit: 100000
 solcArgs: "--optimize --optimize-runs 200"
-quiet: true
+quiet: false
 ```
-
-Key configuration elements:
-- `--compile-force-framework=foundry`: Use Foundry's compilation framework
-- `--foundry-out-dir=out`: Look for artifacts in the `out/` directory
-- `--foundry-ignore-compile`: Skip compilation, use existing artifacts
-- `solcArgs`: Match Foundry's default optimization settings
-- `quiet: true`: Reduce verbose logging
-
-### Why We Use --foundry-ignore-compile
-
-**Without this flag** (`--foundry-compile-all`):
-- crytic-compile runs `forge build --build-info`
-- Generates 134MB of build metadata
-- Takes several minutes to parse for 283 contracts
-- Appears as a hang
-
-**With this flag** (`--foundry-ignore-compile`):
-- Requires manual `forge build` first
-- Uses existing artifacts from `out/`
-- Starts fuzzing within 5-10 seconds
-- Much more efficient for iterative fuzzing
-
-### Environment
-
-- **Echidna Version**: 2.2.6+
-- **Forge Version**: Supports Solidity 0.8.24, Cancun EVM
-- **Project Size**: 283 contracts
-- **Compilation Time**: ~55 seconds (forge build)
-- **Platform**: macOS
-
-### Success Criteria
-
-After implementing this workflow:
-- ✅ `forge build` completes in ~55 seconds
-- ✅ `out/` directory exists with 277+ contract artifacts
-- ✅ `out/CryticTester.sol/CryticTester.json` exists
-- ✅ Echidna starts within 5-10 seconds
-- ✅ No compilation hang
-- ✅ Fuzzing campaign begins successfully
 
 ## Summary
 
-**Issue**: Echidna hangs at "Compiling ...." phase
+**Status:** Configuration fixed, but deployment fails due to unsupported cheatcodes in TestDeployer
 
-**Root Cause**: `out/` directory with compiled artifacts doesn't exist, but `--foundry-ignore-compile` expects pre-compiled artifacts
+**Root Cause:** TestDeployer uses Foundry-specific cheatcodes not supported by Echidna
 
-**Solution**: Run `forge build` before running Echidna
+**Solution:** Create EchidnaDeployer that only uses Echidna-supported cheatcodes
 
-**Workflow**:
-1. `forge build` (compile contracts)
-2. `echidna . --contract CryticTester --config echidna.yaml` (run fuzzer)
+**Progress:**
+- ✅ Fixed compilation issue (removed `--foundry-ignore-compile`)
+- ✅ Echidna compiles contracts successfully (~68 seconds)
+- ✅ Echidna completes Slither analysis (~107 seconds)
+- ✅ Echidna finds CryticTester contract
+- ❌ Deployment fails with BadCheatCode error
+- ⏳ Need to implement EchidnaDeployer
 
-**Result**: Echidna runs successfully without hanging
-
-**Prevention**: Use wrapper script or document the two-step workflow clearly
-
----
-
-## Previous Issues (Historical Context)
-
-### Issue #2: Build-Info Hang (December 5, 2025 - 12:39 PM) - RESOLVED
-
-**Problem**: Even with `--ignore-compile`, Echidna was hanging due to crytic-compile's analysis phase.
-
-**Solution**: Changed to `--foundry-ignore-compile` for more aggressive bypass of compilation.
-
-### Issue #1: Build-Info Generation Slowness (December 5, 2025 - 12:23 PM) - RESOLVED
-
-**Problem**: `--foundry-compile-all` triggered `forge build --build-info` which took too long on large projects (134MB of metadata for 283 contracts).
-
-**Solution**: Switched to `--ignore-compile` (later upgraded to `--foundry-ignore-compile`) with manual pre-compilation.
+**Next Action:** Implement Option 3 - Fork TestDeployer to create EchidnaDeployer
 
 ---
 
-## Related Documentation
+## Technical Details
 
-- [Echidna Documentation](https://secure-contracts.com/program-analysis/echidna/index.html)
-- [crytic-compile Foundry Integration](https://github.com/crytic/crytic-compile)
-- [Echidna Issue #1089 - Long compilation times](https://github.com/crytic/echidna/issues/1089)
+### Error Output
+```
+[2025-12-05 12:58:58.66] Compiling .... Done! (67.281538s)
+Analyzing contract: /path/to/CryticTester.sol:CryticTester
+[2025-12-05 13:00:08.14] Running slither on .... Done! (107.249608s)
+echidna: Deploying the contract 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496 failed (revert, out-of-gas, sending ether to an non-payable constructor, etc.):
+OwnershipTransferred() from: 0xffd4505b3452dc22f8473616d50503ba9e1710ac
+OwnershipTransferred() from: 0xab51e03ffe3144d97837db7b929bafd16fd94fe8
+OwnershipTransferred() from: 0x3c8ca53ee5661d29d3d3c0732689a4b86947eaf0
+BaseRateUpdated(1000000000000000000) from: 0x76006c4471fb6add17728e9c9c8b67d5af06cda0
+error BadCheatCode "Cannot understand cheatcode." 0xd930a0e6
+error Revert 0x
+```
+
+### Environment
+- **Echidna Version:** 2.2.6
+- **crytic-compile Version:** 0.3.8
+- **Forge Version:** 1.2.3-stable
+- **Platform:** macOS
+- **Project:** Liquity Bold (283 contracts)
+
+### Related Files
+- `echidna.yaml` - Fixed configuration
+- `test/recon/Setup.sol` - Calls TestDeployer (needs EchidnaDeployer)
+- `test/TestContracts/Deployment.t.sol` - Contains unsupported cheatcodes
+- `lib/chimera/src/Hevm.sol` - Defines supported cheatcodes
