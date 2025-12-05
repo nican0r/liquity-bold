@@ -1,8 +1,0 @@
-{
-  "StabilityPoolTargets": {
-    "functions": [
-      "stabilityPool_offset",
-      "stabilityPool_triggerBoldRewards"
-    ]
-  }
-}
