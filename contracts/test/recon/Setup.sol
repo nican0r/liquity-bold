@@ -24,6 +24,7 @@ import "src/Interfaces/ICollateralRegistry.sol";
 import "src/Interfaces/IHintHelpers.sol";
 import "src/Interfaces/IMultiTroveGetter.sol";
 import {IPriceFeedTestnet} from "test/TestContracts/Interfaces/IPriceFeedTestnet.sol";
+import "src/Interfaces/IWETH.sol";
 
 // Use the test deployer to avoid circular dependencies
 import {TestDeployer} from "test/TestContracts/Deployment.t.sol";
