@@ -26,8 +26,8 @@ import "src/Interfaces/IMultiTroveGetter.sol";
 import {IPriceFeedTestnet} from "test/TestContracts/Interfaces/IPriceFeedTestnet.sol";
 import "src/Interfaces/IWETH.sol";
 
-// Use the test deployer to avoid circular dependencies
-import {TestDeployer} from "test/TestContracts/Deployment.t.sol";
+// Use the Echidna-compatible deployer (doesn't use file system cheatcodes)
+import {TestDeployerEchidna} from "test/TestContracts/TestDeployerEchidna.sol";
 
 abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
     // Configuration constants
@@ -52,10 +52,10 @@ abstract contract Setup is BaseSetup, ActorManager, AssetManager, Utils {
         // 2. Create collateral token using AssetManager (will be used as the collateral)
         _newAsset(DECIMALS);
         
-        // 3. Use TestDeployer to deploy all contracts properly
-        TestDeployer deployer = new TestDeployer();
-        TestDeployer.LiquityContractsDev memory contracts;
-        TestDeployer.Zappers memory zappers;
+        // 3. Use TestDeployerEchidna to deploy all contracts properly (Echidna-compatible)
+        TestDeployerEchidna deployer = new TestDeployerEchidna();
+        TestDeployerEchidna.LiquityContractsDev memory contracts;
+        TestDeployerEchidna.Zappers memory zappers;
         ICollateralRegistry collateralRegistry;
         IHintHelpers hintHelpers;
         IMultiTroveGetter multiTroveGetter;
