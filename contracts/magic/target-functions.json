@@ -1,0 +1,12 @@
+[
+  {
+    "contract": "IStabilityPool",
+    "target_functions": [
+      "claimAllCollGains",
+      "offset",
+      "provideToSP",
+      "triggerBoldRewards",
+      "withdrawFromSP"
+    ]
+  }
+]
