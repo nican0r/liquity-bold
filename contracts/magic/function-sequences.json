@@ -1,0 +1,22 @@
+{
+  "stabilityPool_provideToSP": {
+    "prerequisite_functions": []
+  },
+  "stabilityPool_withdrawFromSP": {
+    "prerequisite_functions": [
+      "stabilityPool_provideToSP"
+    ]
+  },
+  "stabilityPool_claimAllCollGains": {
+    "prerequisite_functions": [
+      "stabilityPool_provideToSP",
+      "stabilityPool_withdrawFromSP"
+    ]
+  },
+  "stabilityPool_offset": {
+    "prerequisite_functions": []
+  },
+  "stabilityPool_triggerBoldRewards": {
+    "prerequisite_functions": []
+  }
+}
