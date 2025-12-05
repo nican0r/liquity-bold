@@ -1,1 +1,0 @@
-export { VoteAction } from './VoteAction'

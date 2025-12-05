@@ -1,1 +1,0 @@
-export { useGetVotingState } from './useGetVotingState';

@@ -1,1 +1,0 @@
-export { BribeInfo } from './BribeInfo';

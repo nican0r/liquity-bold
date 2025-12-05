@@ -1,1 +1,0 @@
-export { YieldSourceTable } from './YieldSourceTable';

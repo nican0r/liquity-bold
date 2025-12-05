@@ -1,1 +1,0 @@
-export { initiativeStatusLabel } from './initiativeStatusLabel'

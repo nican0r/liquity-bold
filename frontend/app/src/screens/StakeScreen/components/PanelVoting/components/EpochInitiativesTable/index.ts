@@ -1,1 +1,0 @@
-export { EpochInitiativesTable } from './EpochInitiativesTable';

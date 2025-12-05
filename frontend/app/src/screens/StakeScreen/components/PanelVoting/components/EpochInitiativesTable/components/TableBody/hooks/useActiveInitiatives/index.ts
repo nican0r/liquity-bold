@@ -1,1 +1,0 @@
-export { useActiveInitiatives } from './useActiveInitiatives';

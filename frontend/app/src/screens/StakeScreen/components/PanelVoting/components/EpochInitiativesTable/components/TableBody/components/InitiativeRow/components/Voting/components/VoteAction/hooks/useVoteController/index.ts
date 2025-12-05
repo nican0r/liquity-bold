@@ -1,1 +1,0 @@
-export { useVoteController } from './useVoteController';

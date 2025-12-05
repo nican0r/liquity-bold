@@ -1,1 +1,0 @@
-export { filterVoteAllocationsForSubmission } from "./filterVoteAllocationsForSubmission";

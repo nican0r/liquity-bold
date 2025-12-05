@@ -1,1 +1,0 @@
-export { InitiativeStatusTag } from './InitiativeStatusTag';

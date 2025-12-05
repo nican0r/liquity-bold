@@ -1,1 +1,0 @@
-export { useVotingStateContext } from './useVotingStateContext';

@@ -1,1 +1,0 @@
-export { CrossedText } from './CrossedText';

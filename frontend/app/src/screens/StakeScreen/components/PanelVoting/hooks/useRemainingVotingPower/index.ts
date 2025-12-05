@@ -1,1 +1,0 @@
-export { useRemainingVotingPower } from './useRemainingVotingPower';
