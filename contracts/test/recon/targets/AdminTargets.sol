@@ -10,6 +10,8 @@ import {vm} from "@chimera/Hevm.sol";
 // Helpers
 import {Panic} from "@recon/Panic.sol";
 
+import "src/StabilityPool.sol";
+
 abstract contract AdminTargets is
     BaseTargetFunctions,
     Properties
@@ -18,4 +20,12 @@ abstract contract AdminTargets is
 
 
     /// AUTO GENERATED TARGET FUNCTIONS - WARNING: DO NOT DELETE OR MODIFY THIS LINE ///
+
+    function stabilityPool_offset(uint256 _debtToOffset, uint256 _collToAdd) public asAdmin {
+        stabilityPool.offset(_debtToOffset, _collToAdd);
+    }
+
+    function stabilityPool_triggerBoldRewards(uint256 _boldYield) public asAdmin {
+        stabilityPool.triggerBoldRewards(_boldYield);
+    }
 }
